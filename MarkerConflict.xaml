@@ -1,0 +1,23 @@
+﻿<Canvas xmlns="http://schemas.microsoft.com/client/2007"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="canvas">
+  <Rectangle x:Name="Background"
+             Opacity="0.8"
+             Fill="Red"
+             RadiusX="2"
+             RadiusY="2" />
+  <Rectangle x:Name="Border"
+             Stroke="Black"
+             RadiusX="2"
+             RadiusY="2" />
+  <Canvas.Resources>
+    <Storyboard x:Name="Pulse">
+      <DoubleAnimation From="0.0"
+                       To="1.0"
+                       Duration="00:00:00.3"
+                       AutoReverse="true"
+                       Storyboard.TargetName="canvas"
+                       Storyboard.TargetProperty="(UIElement.Opacity)" />
+    </Storyboard>
+  </Canvas.Resources>
+</Canvas>

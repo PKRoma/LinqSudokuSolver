@@ -1,0 +1,12 @@
+﻿<Canvas xmlns="http://schemas.microsoft.com/client/2007"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="canvas">
+  <Canvas.Resources>
+    <Storyboard x:Name="FadeStoryboard">
+      <DoubleAnimation x:Name="FadeAnimation"
+                       To="0.0"
+                       Storyboard.TargetName="canvas"
+                       Storyboard.TargetProperty="(UIElement.Opacity)" />
+    </Storyboard>
+  </Canvas.Resources>
+</Canvas>
