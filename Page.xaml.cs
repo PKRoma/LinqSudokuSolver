@@ -87,6 +87,9 @@ namespace SilverlightSudokuHelper
         {
             switch (e.Key)
             {
+                case 8: // Escape
+                    _primaryBoardDisplay.Solve();
+                    break;
                 case 14: // Left arrow
                 case 15: // Up arrow
                 case 16: // Right arrow

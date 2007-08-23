@@ -219,7 +219,11 @@ namespace SilverlightSudokuHelper
                 Layout();
             }
         }
-
+        public void Solve()
+        {
+            _board.Solve();
+            UpdateDisplay(_board);
+        }
         // Fade the display out
         public void Fade(double seconds)
         {

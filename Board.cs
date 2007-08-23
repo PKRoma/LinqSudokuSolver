@@ -1,4 +1,6 @@
-﻿namespace SilverlightSudokuHelper
+﻿using System.Collections.Generic;
+
+namespace SilverlightSudokuHelper
 {
     internal class Board
     {
@@ -47,7 +49,31 @@
                 }
             }
         }
+        private IEnumerable<string> GetDigitList()
+        {
+            foreach (var digit in _digits)
+            {
+                yield return digit.ValueKnown ? digit.KnownValue.ToString() : ".";
+            }
+        }
+        public void Solve()
+        {
+            var digitList=string.Join("", new List<string>(GetDigitList()).ToArray());
+            var grid=LinqSudokuSolver.parse_grid(digitList);
+            var solution=LinqSudokuSolver.search(grid);
 
+            var rowIdentifiers="ABCDEFGHI";
+            for(var row=0; row<Size; row++) {
+
+                for(var col=0; col<Size; col++) {
+                    var key = rowIdentifiers[row] + (col+1).ToString();
+                    var solvedValue=int.Parse(solution[key]);
+
+                    _digits[row, col].ClearValue();
+                    _digits[row, col].SetValue(solvedValue, Digit.Kind.Given);
+                }
+            }
+        }
         public Digit GetDigit(int x, int y)
         {
             // Return the specified digit
