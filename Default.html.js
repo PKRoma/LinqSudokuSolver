@@ -4,7 +4,7 @@
 function createSilverlight()
 {
     Silverlight.createObjectEx({
-        source: "Page.xaml",
+        source: "ClientBin/SilverlightSudokuHelper.xap",
         parentElement: document.getElementById("SilverlightControlHost"),
         id: "SilverlightControl",
         properties: {

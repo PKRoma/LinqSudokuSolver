@@ -1,16 +1,17 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace SilverlightSudokuHelper
 {
-    internal class BoardDisplay : Control
+    internal class BoardDisplay : UserControl
     {
         private const int MarkerMargin = 2;
-        private const string FontFamily = "Arial";
+        private FontFamily FontFamily = new FontFamily("Arial");
 
         private bool _candidatesVisible = true;
         private Canvas _root;
@@ -30,7 +31,7 @@ namespace SilverlightSudokuHelper
         public BoardDisplay()
         {
             // Initialize from XAML and get references to child elements
-            _root = InitializeFromXaml(Utility.GetXamlResource("SilverlightSudokuHelper.BoardDisplay.xaml")) as Canvas;
+            _root = XamlReader.Load(Utility.GetXamlResource("SilverlightSudokuHelper.BoardDisplay.xaml")) as Canvas;
             _fadeStoryboard = _root.FindName("FadeStoryboard") as Storyboard;
             _fadeAnimation = _root.FindName("FadeAnimation") as DoubleAnimation;
 
@@ -92,7 +93,10 @@ namespace SilverlightSudokuHelper
             }
 
             // Handle the Loaded event to do layout
-            Loaded += new EventHandler(HandleLoaded);
+            Loaded += new RoutedEventHandler(HandleLoaded);
+
+            // Attach the constructed object to make it visible
+            Content = _root;
         }
 
         private void HandleLoaded(object sender, EventArgs e)
@@ -103,6 +107,12 @@ namespace SilverlightSudokuHelper
 
         public void Layout()
         {
+            // Do nothing if Width is NaN
+            if (Double.IsNaN(Width))
+            {
+                return;
+            }
+
             // Resize the frame and lines to fill the control
             _frame.Width = Width;
             _frame.Height = Height;

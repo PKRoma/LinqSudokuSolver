@@ -1,8 +1,8 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.20706</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F371D205-3FCD-466F-9751-2963857CFA83}</ProjectGuid>
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -11,13 +11,19 @@
     <RootNamespace>SilverlightSudokuHelper</RootNamespace>
     <AssemblyName>SilverlightSudokuHelper</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>SilverlightSudokuHelper.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>SilverlightSudokuHelper.App</SilverlightAppEntry>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>ClientBin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -27,21 +33,25 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>ClientBin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="agclr" />
+    <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="system.Xml.core" />
-    <Reference Include="system.silverlight" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Board.cs" />
     <Compile Include="BoardDisplay.cs" />
     <Compile Include="Digit.cs" />
@@ -55,9 +65,14 @@
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <SilverlightPage Include="Page.xaml">
-      <Generator>MSBuild:CompileXaml</Generator>
-    </SilverlightPage>
+    <Page Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.html" />
@@ -74,16 +89,20 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BoardDisplay.xaml">
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="MarkerConflict.xaml">
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="MarkerSelection.xaml">
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\Silverlight\Microsoft.Silverlight.Csharp.targets" />
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.Csharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -94,7 +113,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
-        <WebProjectProperties />
+        <SilverlightProjectProperties />
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>

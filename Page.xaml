@@ -1,6 +1,6 @@
-﻿<Canvas xmlns="http://schemas.microsoft.com/client/2007"
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="SilverlightSudokuHelper.Page;assembly=ClientBin/SilverlightSudokuHelper.dll"
+        x:Class="SilverlightSudokuHelper.Page"
         Loaded="Page_Loaded">
   <MediaElement x:Name="mediaElement" />
 </Canvas>

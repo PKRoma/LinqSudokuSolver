@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Browser;
 using System.Windows.Controls;
@@ -59,12 +59,18 @@ namespace SilverlightSudokuHelper
         // _fadingBoardDisplay renders the previous board and fades away when changes are made
         private BoardDisplay _fadingBoardDisplay;
         private double _defaultVolume;
+        private Content BrowserHost;
+
+        public Page()
+        {
+            InitializeComponent();
+        }
 
         public void Page_Loaded(object o, EventArgs e)
         {
             // Initialize variables
-            InitializeComponent();
             _defaultVolume = mediaElement.Volume;
+            BrowserHost = App.Current.Host.Content;
 
             // Initialize UI
             _primaryBoardDisplay = new BoardDisplay();
@@ -73,9 +79,9 @@ namespace SilverlightSudokuHelper
             Children.Add(_fadingBoardDisplay);
 
             // Initialize handlers
-            KeyUp += new KeyboardEventHandler(HandleKeyUp);
-            MouseLeftButtonDown += new MouseEventHandler(HandleMouseLeftButtonDown);
-            BrowserHost.Resize += new EventHandler(HandleResize);
+            KeyUp += new KeyEventHandler(HandleKeyUp);
+            MouseLeftButtonDown += new MouseButtonEventHandler(HandleMouseLeftButtonDown);
+            BrowserHost.Resized += new EventHandler(HandleResize);
 
             // Create the starting board, play the "new" sound, and fade it in
             _primaryBoardDisplay.Board = Board.FromString(BoardWikipediaSample);
@@ -83,30 +89,30 @@ namespace SilverlightSudokuHelper
             _fadingBoardDisplay.Fade(FadeSecondsLoading);
         }
 
-        private void HandleKeyUp(object sender, KeyboardEventArgs e)
+        private void HandleKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
-                case 8: // Escape
+                case Key.Escape: // Escape
                     _primaryBoardDisplay.Solve();
                     break;
-                case 14: // Left arrow
-                case 15: // Up arrow
-                case 16: // Right arrow
-                case 17: // Down arrow
+                case Key.Left: // Left arrow
+                case Key.Up: // Up arrow
+                case Key.Right: // Right arrow
+                case Key.Down: // Down arrow
                     // Move the marker
                     var markerPosition = _primaryBoardDisplay.MarkerPosition;
                     switch (e.Key)
                     {
-                        case 14: markerPosition.X--; break;
-                        case 15: markerPosition.Y--; break;
-                        case 16: markerPosition.X++; break;
-                        case 17: markerPosition.Y++; break;
+                        case Key.Left: markerPosition.X--; break;
+                        case Key.Up: markerPosition.Y--; break;
+                        case Key.Right: markerPosition.X++; break;
+                        case Key.Down: markerPosition.Y++; break;
                     }
                     _primaryBoardDisplay.MarkerPosition = markerPosition;
                     _fadingBoardDisplay.MarkerPosition = markerPosition;
                     break;
-                case 19: // Delete
+                case Key.Delete: // Delete
                     // Clear the cell's value
                     PrepareFade();
                     if (_primaryBoardDisplay.ChangeSelectedValue(Digit.Unknown, Digit.Kind.Normal))
@@ -116,18 +122,18 @@ namespace SilverlightSudokuHelper
                         _fadingBoardDisplay.Fade(FadeSecondsNormal);
                     }
                     break;
-                case 21: // 1
-                case 22: // 2
-                case 23: // 3
-                case 24: // 4
-                case 25: // 5
-                case 26: // 6
-                case 27: // 7
-                case 28: // 8
-                case 29: // 9
+                case Key.D1: // 1
+                case Key.D2: // 2
+                case Key.D3: // 3
+                case Key.D4: // 4
+                case Key.D5: // 5
+                case Key.D6: // 6
+                case Key.D7: // 7
+                case Key.D8: // 8
+                case Key.D9: // 9
                     // Set the cell's value
                     PrepareFade();
-                    if (_primaryBoardDisplay.ChangeSelectedValue(e.Key - 20, (e.Shift ? Digit.Kind.Given : (e.Ctrl ? Digit.Kind.Guess : Digit.Kind.Normal))))
+                    if (_primaryBoardDisplay.ChangeSelectedValue(e.Key - Key.D0, ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift ? Digit.Kind.Given : ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control ? Digit.Kind.Guess : Digit.Kind.Normal))))
                     {
                         // Normal move; play the appropriate sound and fade it
                         PlaySoundEffect(_primaryBoardDisplay.Board.Complete ? SoundEffect.Complete : SoundEffect.Move);
@@ -139,25 +145,25 @@ namespace SilverlightSudokuHelper
                         PlaySoundEffect(SoundEffect.Conflict);
                     }
                     break;
-                case 31: // B
-                case 35: // F
-                case 48: // S
-                case 52: // W
+                case Key.B: // B
+                case Key.F: // F
+                case Key.S: // S
+                case Key.W: // W
                     // Switch to the specified board
                     PrepareFade();
                     var boardString = "";
                     switch (e.Key)
                     {
-                        case 31: boardString = BoardBlank; break;
-                        case 35: boardString = BoardAlmostFinished; break;
-                        case 48: boardString = BoardSudopediaSample; break;
-                        case 52: boardString = BoardWikipediaSample; break;
+                        case Key.B: boardString = BoardBlank; break;
+                        case Key.F: boardString = BoardAlmostFinished; break;
+                        case Key.S: boardString = BoardSudopediaSample; break;
+                        case Key.W: boardString = BoardWikipediaSample; break;
                     }
                     _primaryBoardDisplay.Board = Board.FromString(boardString);
                     PlaySoundEffect(SoundEffect.New);
                     _fadingBoardDisplay.Fade(FadeSecondsNormal);
                     break;
-                case 32: // C
+                case Key.C: // C
                     // Toggle the candidate display
                     PrepareFade();
                     _primaryBoardDisplay.CandidatesVisible = !_primaryBoardDisplay.CandidatesVisible;
@@ -205,7 +211,7 @@ namespace SilverlightSudokuHelper
                     break;
             }
             // Set the source and play the sound
-            mediaElement.Source = new Uri(HtmlPage.DocumentUri, soundFile);
+            mediaElement.Source = new Uri(HtmlPage.Document.DocumentUri, soundFile);
             mediaElement.Play();
         }
 
