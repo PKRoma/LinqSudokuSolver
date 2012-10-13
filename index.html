@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- saved from url=(0014)about:internet -->
+<head>
+    <title>Silverlight Sudoku Helper</title>
+
+    <script type="text/javascript" src="Silverlight.js"></script>
+    <script type="text/javascript" src="Default.html.js"></script>
+    <script type="text/javascript">
+        function BodyOnKeyDown() {
+            // Handle body.onkeydown event to suppress arrow keys
+            // which would otherwise scroll the page annoyingly
+            if (window.event && (37 <= window.event.keyCode) && (window.event.keyCode <= 40)) {
+                window.event.returnValue = false;
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        body { font-family: Verdana,Arial,Sans-Serif; font-size: 10pt; text-align: center; }
+        .title { font-size: 30px; font-weight: bold; font-style: italic; margin-top: 0.5em; margin-bottom: 1.2em; }
+        .silverlightHost { width: 500px; height: 500px; margin-left: auto; margin-right: auto; }
+        .frame { width:500px; text-align: left; margin-top: 2em; margin-left: auto; margin-right: auto; }
+        .header { font-weight: bold; margin-bottom: 0px; }
+        ul { margin-top: 0.5em; }
+    </style>
+</head>
+
+<body onkeydown="BodyOnKeyDown();">
+    <p class="title">Silverlight Sudoku Helper</p>
+
+    <div id="SilverlightControlHost" class="silverlightHost">
+        <script type="text/javascript">
+            createSilverlight();
+        </script>
+    </div>
+
+    <div class="frame">
+        <p class="header">Directions</p>
+        <ul>
+            <li>The "big numbers" (black) show the values for each filled cell</li>
+            <li>The "small numbers" (gray) show the candidates for each empty cell</li>
+            <li>The arrow keys (<b>Up</b>, <b>Down</b>, <b>Left</b>, <b>Right</b>) move the yellow cursor to select a cell</li>
+            <li>The number keys (<b>1</b>-<b>9</b>) set the value of the selected cell</li>
+            <li>The <b>Delete</b> key clears the value of a filled cell</li>
+            <li>The <b>C</b> key toggles the display of candidates</li>
+            <li>The <b>Escape</b> key solves the puzzle automatically</li>
+            <li>Invalid moves are not allowed; conflicts are indicated by a red flash in the conflicting cell</li>
+            <li>Sudoku description and rules can be found in <a href="http://en.wikipedia.org/wiki/Sudoku">Wikipedia</a> and <a href="http://www.sudopedia.org/wiki/Main_Page">Sudopedia</a></li>
+        </ul>
+
+        <p class="header">Notes</p>
+        <ul>
+            <li>If keys stop working, click on the Sudoku board to restore keyboard focus to the application</li>
+            <li>The <b>B</b> key changes to a blank board suitable for copying a new puzzle from a book/web site/etc.</li>
+            <li>The <b>W</b> key changes to a sample board from <a href="http://en.wikipedia.org/wiki/Sudoku">Wikipedia</a> (easy)</li>
+            <li>The <b>S</b> key changes to a sample board from <a href="http://www.sudopedia.org/wiki/Introduction">Sudopedia</a> (hard)</li>
+            <li>The <b>F</b> key changes to a nearly complete board (very easy!)</li>
+            <li>When copying a board, hold down the <b>Shift</b> key when typing the numbers to <b>bold</b> the given values</li>
+            <li>When guessing a value, hold down the <b>Ctrl</b> key when typing the number to <em>italicize</em> it</li>
+            <li>A number's display type (normal&lt;-&gt;<b>bold</b>&lt;-&gt;<em>italicized</em>) can be changed in-place; change the number's value by deleting the old value before typing the new one</li>
+            <li>For more information, see the blog post about <a href="http://blogs.msdn.com/delay/archive/2007/08/21/time-for-a-little-fun-and-games-silverlight-helps-play-sudoku.aspx">Silverlight Sudoku Helper</a> on <a href="http://blogs.msdn.com/Delay/">Delay's Blog</a></li>
+        </ul>
+    </div>
+</body>
+</html>
